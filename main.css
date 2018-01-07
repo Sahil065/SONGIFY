@@ -3,7 +3,9 @@
 *:before {
     box-sizing: border-box;
 }
-
+.play-icon{
+	color:teal;
+}
 html,
 body {
     height: 100%;
