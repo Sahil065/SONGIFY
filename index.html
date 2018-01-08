@@ -31,7 +31,25 @@
         <div> Duration </div>
         </div>
         <div class="song-list">
-        <div class="song">
+        <div id= "song" class="song">
+        <span class="song-name"></span>
+        <span class="song-artist"></span>
+        <span class="song-album"></span>
+        <span class="song-length"></span>
+        </div>
+		<div id="song1" class="song">
+        <span class="song-name"></span>
+        <span class="song-artist"></span>
+        <span class="song-album"></span>
+        <span class="song-length"></span>
+        </div>
+		<div id="song2" class="song">
+        <span class="song-name"></span>
+        <span class="song-artist"></span>
+        <span class="song-album"></span>
+        <span class="song-length"></span>
+        </div>
+		<div id="song3" class="song">
         <span class="song-name"></span>
         <span class="song-artist"></span>
         <span class="song-album"></span>
@@ -111,14 +129,62 @@
 	$('.song-duration').text(duration);
 	}
 	
-	var songName='Jatt Fire karda';
-	$('.song-name').text(songName);
+	var songList=['track1','track2','track3','track4'];
+	var fileNames=['song.mp3','song1.mp3','song2.mp3','song3.mp3'];
+	//$('.song-name').text(songName);
 	window.onload=function(){
+	$('#song .song-name').text(songList[0]);
+	$('#song1 .song-name').text(songList[1]);
+	$('#song2 .song-name').text(songList[2]);
+	$('#song3 .song-name').text(songList[3]);
 	setInterval(function(){
 	updateCurrentTime();
 	},1000);
 	}
-
+	$('#song').click(function(){
+	var audio=document.querySelector('audio');
+	var currentSong=audio.src;
+	if(currentSong.search(fileNames[0])!= -1)
+	{
+	togglesong();
+	}
+	else{
+	audio.src=fileNames[0];
+	togglesong();
+	}});
+	$('#song1').click(function(){
+	var audio=document.querySelector('audio');
+	var currentSong=audio.src;
+	if(currentSong.search(fileNames[1])!= -1)
+	{
+	togglesong();
+	}
+	else{
+	audio.src=fileNames[1];
+	togglesong();
+	}});
+	$('#song2').click(function(){
+	var audio=document.querySelector('audio');
+	var currentSong=audio.src;
+	if(currentSong.search(fileNames[2])!= -1)
+	{
+	togglesong();
+	}
+	else{
+	audio.src=fileNames[2];
+	togglesong();
+	}});
+	$('#song3').click(function(){
+	var audio=document.querySelector('audio');
+	var currentSong=audio.src;
+	if(currentSong.search(fileNames[3])!= -1)
+	{
+	togglesong();
+	}
+	else{
+	audio.src=fileNames[3];
+	togglesong();
+	}});
     $('.play-icon').on('click', function() {
         togglesong();
     });
