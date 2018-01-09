@@ -15,7 +15,8 @@ $('.welcome-screen button').on('click', function() {
             console.log('Playing');
             $('.play-icon').removeClass('fa-play').addClass('fa-pause');
             song.play();
-        } else {
+        } 
+		else {
             console.log('Pausing');
             $('.play-icon').removeClass('fa-pause').addClass('fa-play');
             song.pause();
@@ -39,7 +40,15 @@ $('.welcome-screen button').on('click', function() {
     ret += "" + secs;
     return ret;
 	}
-	function updateCurrentTime(){
+	
+	
+function changeCurrentSongDetails(songObj) {
+  $('.current-song-image').attr('src','image/' + songObj.image) ;
+  $('.current-song-name').text(songObj.name) ;
+  $('.current-song-album').text(songObj.album) ;
+}
+	
+function updateCurrentTime(){
 	var song=document.querySelector('audio');
 	//console.log(song.currentTime);
 	//console.log(song.duration);
@@ -51,7 +60,8 @@ $('.welcome-screen button').on('click', function() {
 	$('.song-duration').text(duration);
 	}
 	
-	function addSongNameClickEvent(songName,position){
+function addSongNameClickEvent(songObj,position){
+	var songName=songObj.fileName;
 	var id='#song'+position;
 	$(id).click(function(){
 	var audio=document.querySelector('audio');
@@ -63,6 +73,7 @@ $('.welcome-screen button').on('click', function() {
 	else{
 	audio.src=songName;
 	togglesong();
+	changeCurrentSongDetails(songObj);
 	}});
 	}
 
@@ -70,38 +81,51 @@ $('.welcome-screen button').on('click', function() {
 	
 	var songs=[
 	{
-		'name':'track1',
-		'artist':'justin',
-		'album':'solo',
-		'duration':'3:56',
-		'fileName':'song1.mp3'
+		'name':'Despacito',
+		'artist':'Justin Bieber',
+		'album':'Despacito',
+		'duration':'3:55',
+		'fileName':'song1.mp3',
+		'image':'song1.jpg'
 	},
 	{
-		'name':'track2',
-		'artist':'justin',
-		'album':'solo',
+		'name':'Shape of You',
+		'artist':'Ed Sheeran',
+		'album':'Shape of You',
 		'duration':'3:56',
-		'fileName':'song2.mp3'
+		'fileName':'song2.mp3',
+		'image':'song2.jpg'
 	},
 	{
-		'name':'track3',
-		'artist':'justin',
-		'album':'solo',
-		'duration':'3:56',
-		'fileName':'song3.mp3'
+		'name':'Cheap Thrills',
+		'artist':'Sia',
+		'album':'Cheap Thrills',
+		'duration':'3:44',
+		'fileName':'song3.mp3',
+		'image':'song3.jpg'
 	},
 	{
-		'name':'track4',
-		'artist':'justin',
-		'album':'solo',
-		'duration':'3:56',
-		'fileName':'song4.mp3'
+		'name':'Dusk Till Dawn',
+		'artist':'Zayn and Sia',
+		'album':'Dusk Till Dawn',
+		'duration':'4:27',
+		'fileName':'song4.mp3',
+		'image':'song4.jpg'
+	},
+	{
+		'name':'I Dont Wanna Live',
+		'artist':'Zayn and Taylor',
+		'album':'I Dont Wanna Live',
+		'duration':'4:16',
+		'fileName':'song5.mp3',
+		'image':'song5.jpg'
 	}
 	]
 	
-	//$('.song-name').text(songName);
+
 
 window.onload = function() {
+	changeCurrentSongDetails(songs[0]);
 
   for(var i =0; i < songs.length;i++) {
     var obj = songs[i];
@@ -111,15 +135,12 @@ window.onload = function() {
     song.find('.song-artist').text(obj.artist);
     song.find('.song-album').text(obj.album);
     song.find('.song-length').text(obj.duration);
-    addSongNameClickEvent(obj.fileName,i+1)
+    addSongNameClickEvent(obj,i+1)
   }
 	setInterval(function(){
 	updateCurrentTime();
 	},1000);
 	}
-	//for (var i = 0; i < fileNames.length ; i++) {
-    //addSongNameClickEvent(fileNames[i],i+1)
-    //} 
 	
 	 $('.play-icon').on('click', function() {
         togglesong();
