@@ -1,3 +1,4 @@
+
 $('.welcome-screen button').on('click', function() {
         var name = $('#name-input').val();
         if (name.length > 2) {
@@ -5,13 +6,29 @@ $('.welcome-screen button').on('click', function() {
             $('.main .user-name').text(message);
             $('.welcome-screen').addClass('hidden');
             $('.main').removeClass('hidden');
+			fetchSongs();
         } else {
             $('#name-input').addClass('error');
         }
     });
 	function togglesong(){
 	var song = document.querySelector('audio');
-        if (song.paused == true) {
+		if (song.paused == true) {
+            console.log('Playing');
+            $('.play-icon').removeClass('fa-play').addClass('fa-pause');
+            song.play();
+        } 
+		else {
+            console.log('Pausing');
+            $('.play-icon').removeClass('fa-pause').addClass('fa-play');
+            song.pause();
+        }
+	}
+	
+	function splay(sub){
+	var song = document.querySelector('audio');
+		song.src=sub.fileName;
+		if (song.paused == true) {
             console.log('Playing');
             $('.play-icon').removeClass('fa-play').addClass('fa-pause');
             song.play();
@@ -43,7 +60,7 @@ $('.welcome-screen button').on('click', function() {
 	
 	
 function changeCurrentSongDetails(songObj) {
-  $('.current-song-image').attr('src','image/' + songObj.image) ;
+  $('.current-song-image').attr('src',songObj.image) ;
   $('.current-song-name').text(songObj.name) ;
   $('.current-song-album').text(songObj.album) ;
 }
@@ -78,7 +95,7 @@ function addSongNameClickEvent(songObj,position){
 	}
 
 	
-	
+	/*
 	var songs=[
 	{
 		'name':'Despacito',
@@ -140,7 +157,29 @@ window.onload = function() {
 	setInterval(function(){
 	updateCurrentTime();
 	},1000);
-	}
+	}*/
+	
+var songs=[];
+	function setupApp() {
+  changeCurrentSongDetails(songs[0]);
+
+  setInterval(function() {
+    updateCurrentTime() ;
+  }) ;
+
+
+  for(var i =0; i < songs.length;i++) {
+    var obj = songs[i];
+    var name = '#song' + (i+1);
+    var song = $(name);
+    song.find('.song-name').text(obj.name);
+    song.find('.song-artist').text(obj.artist);
+    song.find('.song-album').text(obj.album);
+    song.find('.song-length').text(obj.duration);
+    addSongNameClickEvent(obj,i+1) ;
+  }
+}
+    
 	
 	 $('.play-icon').on('click', function() {
         togglesong();
@@ -150,4 +189,95 @@ window.onload = function() {
                     togglesong();
                 }
             });
-    
+			
+			
+			
+		
+
+  function fetchSongs() {//api.jsonbin.io/b/5a577694fa0fa33d7b63d4d7
+
+      $.ajax({
+        'url': 'https://jsonbin.io/b/5a577694fa0fa33d7b63d4d7',
+        'dataType': 'json',
+        'method': 'GET',
+        'success': function (responseData) {
+          songs = responseData ;
+		  setupApp();
+          console.log(responseData) ;
+        }
+      }) ;
+
+    }
+
+  
+			
+	var recognition= new webkitSpeechRecognition();
+	
+	 $('#start_img').on('click', function () {
+    // This will make your browser start
+    // listening to the user
+	finalText='';
+    recognition.start();
+  }) ;
+  
+	
+
+    var finalText = '' ;
+    recognition.onresult = function(event) {
+      // First declare a variable which
+      // will hold the text
+
+
+      // Your text may have multiple words
+      // We need to iterate over the results
+      for (var i = event.resultIndex; i < event.results.length; ++i) {
+
+        // speech recognition makes several guesses
+        // we have to check for the final guess and
+        // get the sentence out of it
+        if (event.results[i].isFinal) {
+          finalText += event.results[i][0].transcript;
+        }
+      }
+
+    };
+
+  recognition.onend = function () {
+      // call wit
+      callWit(finalText) ;
+    }
+	
+	
+    function callWit(text) {
+        $.ajax({
+         url: 'https://api.wit.ai/message',
+         data: {
+           'q': text ,
+           'access_token' :'5HYHTA44Z2IBUAMTX4QFIQXMCABH66W4'
+         },
+         dataType: 'jsonp',
+         method: 'GET',
+         success: function(response) {
+             console.log("success!", response);
+			 if(response.entities.intent[0].value == 'play') {
+        // Change current song to first song
+         if(response.entities.hasOwnProperty('search_query')) {
+      var songName = response.entities.search_query[0].value ;
+      var matchIndex = 0 ;
+      for(var i =0; i < songs.length ; i++) {
+        // Lower case both song names
+        var isMatch = songs[i].name.toLowerCase().match(songName.toLowerCase()) ;
+        if(isMatch !=null) {
+          matchIndex = i ;
+        }
+      }
+    }
+	changeCurrentSongDetails(songs[matchIndex]) ;
+        splay(songs[matchIndex]);
+      }
+	  else {
+		  togglesong();
+	  }
+	   }
+		});
+	}
