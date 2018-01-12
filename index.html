@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title> Song App</title>
+    <title> SONGIFY</title>
     <link rel="stylesheet" type="text/css" href="font-awesome.css">
     <link rel="stylesheet" type="text/css" href="main.css">
 </head> 
@@ -11,8 +11,10 @@
 <body>
     <div class="wrapper">
         <section class="welcome-screen ">
-            <h1> Welcome to Songify </h1>
-            <h3> Enter name to access your account </h3>
+            <h1> WELCOME TO SONGIFY </h1>
+			<br><br>
+			<img src="logo.png" height=200px width=200px>
+			<br>
             <div class="input-wrapper">
                 <input type="text" placeholder="Name" id="name-input">
                 <button> Go </button>
@@ -21,6 +23,8 @@
         <div class="main hidden">
             <header>
                 <div class="right floated user-name"> </div>
+				<br>
+			<img class="back_img clickable" src="https://i.imgur.com/ZAe1Vp8.png" height="30px" width="30px">
             </header>
             <section class="content">
                 <img id="start_img" src="https://i.imgur.com/OkUqDXe.gif">
@@ -56,12 +60,6 @@
         <span class="song-album"></span>
         <span class="song-length"></span>
         </div>
-		<div id="song5" class="song">
-        <span class="song-name"></span>
-        <span class="song-artist"></span>
-        <span class="song-album"></span>
-        <span class="song-length"></span>
-        </div>
         </div>
 <div class="current-song-wrapper">
     <img src="https://i.imgur.com/rj1EoV8.jpg" class="current-song-image">
@@ -75,6 +73,7 @@
             <footer>			
                 <div class="controls">
 	               <div class="player-buttons">
+				  
                         <i class="fa fa-play clickable play-icon" aria-hidden="true"></i>
                     </div>
 					
@@ -86,6 +85,7 @@
                             <div class="progress-filled"> </div>
                         </div>
                         <span class="song-duration"></span>
+						<span class="time-left hidden"></span>
                     </div>
                 </div>
             </footer>

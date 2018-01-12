@@ -9,8 +9,25 @@ $('.welcome-screen button').on('click', function() {
 			fetchSongs();
         } else {
             $('#name-input').addClass('error');
+			alert("INVALID NAME \nNAME SHOULD BE OF MINIMUM THREE LETTERS");
         }
     });
+
+	$('.back_img').on('click', function() {
+		 $('.main').addClass('hidden');
+          $('.welcome-screen').removeClass('hidden');
+	});
+	
+		$('.song-duration').on('click', function() {
+		 $('.song-duration').addClass('hidden');
+          $('.time-left').removeClass('hidden');
+	});
+		
+	$('.time-left').on('click', function() {
+		 $('.time-left').addClass('hidden');
+          $('.song-duration').removeClass('hidden');
+	});
+
 	function togglesong(){
 	var song = document.querySelector('audio');
 		if (song.paused == true) {
@@ -70,11 +87,17 @@ function updateCurrentTime(){
 	//console.log(song.currentTime);
 	//console.log(song.duration);
 	var currentTime=Math.floor(song.currentTime);
+	var x=currentTime;
 	currentTime=fancyTimeFormat(currentTime);
 	var duration=Math.floor(song.duration);
+	var y=duration;
 	duration=fancyTimeFormat(duration);
+	
+	var timeleft=y-x;
+	timeleft=fancyTimeFormat(timeleft);
 	$('.time-elapsed').text(currentTime);
 	$('.song-duration').text(duration);
+	$('.time-left').text( "-" + timeleft);
 	}
 	
 function addSongNameClickEvent(songObj,position){
@@ -194,7 +217,7 @@ var songs=[];
 			
 		
 
-  function fetchSongs() {//api.jsonbin.io/b/5a577694fa0fa33d7b63d4d7
+  function fetchSongs() {
 
       $.ajax({
         'url': 'https://jsonbin.io/b/5a577694fa0fa33d7b63d4d7',
