@@ -10,7 +10,7 @@
 
 <body>
     <div class="wrapper">
-        <section class="welcome-screen ">
+        <section class="welcome-screen">
             <h1> WELCOME TO SONGIFY </h1>
 			<br><br>
 			<img src="logo.png" height=200px width=200px>
@@ -20,15 +20,22 @@
                 <button> Go </button>
             </div>
         </section>
-        <div class="main hidden">
+        <div class="main hidden ">
             <header>
-                <div class="right floated user-name"> </div>
-				<br>
+             <div class="right floated user-name"></div>
+			<div class="text-input">
+				<input type="text" id="text1" placeholder="SONG NAME" >
+				<button id="go">GO</button>
+				</div>
 			<img class="back_img clickable" src="https://i.imgur.com/ZAe1Vp8.png" height="30px" width="30px">
-            </header>
+			
+			</header>
             <section class="content">
+				<div class="total"></div>
+				<div class="mike">
                 <img id="start_img" src="https://i.imgur.com/OkUqDXe.gif">
-				<audio src="https://goo.gl/SLTCxH" class="aud"></audio>
+				</div>
+				<audio src="song1.mp3" class="aud"></audio>
                 <div class="list-headers">
         <div> Title </div> 
         <div> Artist </div>
@@ -59,13 +66,20 @@
         <span class="song-artist"></span>
         <span class="song-album"></span>
         <span class="song-length"></span>
+        </div>	
+		<div id="song5" class="song">
+        <span class="song-name"></span>
+        <span class="song-artist"></span>
+        <span class="song-album"></span>
+        <span class="song-length"></span>
         </div>
         </div>
 <div class="current-song-wrapper">
-    <img src="https://i.imgur.com/rj1EoV8.jpg" class="current-song-image">
+    <img src="image/song1.jpg" class="current-song-image">
     <div>
       <p class="current-song-name"></p>
       <p class="current-song-album"></p>
+	   <p class="current-song-artist"></p>
     </div>
   </div>
             </section>
@@ -84,8 +98,8 @@
 						<div class="player-progress">
                             <div class="progress-filled"> </div>
                         </div>
-                        <span class="song-duration"></span>
-						<span class="time-left hidden"></span>
+                        <span class="song-duration clickable"></span>
+						<span class="time-left hidden clickable"></span>
                     </div>
                 </div>
             </footer>

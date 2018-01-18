@@ -1,34 +1,67 @@
-
+//function to show main  and hide welcome-screen
 $('.welcome-screen button').on('click', function() {
         var name = $('#name-input').val();
-        if (name.length > 2) {
+        //checking whether name is valid or not
+		if (name.length > 2) {
             var message = "Welcome, " + name;
             $('.main .user-name').text(message);
             $('.welcome-screen').addClass('hidden');
             $('.main').removeClass('hidden');
-			fetchSongs();
+			//fetchSongs();
         } else {
             $('#name-input').addClass('error');
 			alert("INVALID NAME \nNAME SHOULD BE OF MINIMUM THREE LETTERS");
         }
     });
+	
+var flag=0;
+//user can type name of the song instead of speaking
+$('.text-input button').on('click',function(){
+	var textdata=$('#text1').val();
+	console.log(textdata);
+      var matchIndex = 0 ;
+      for(var i =0; i < songs.length ; i++) {
+        // Lower case both song names
+        var isMatch = songs[i].name.toLowerCase().match(textdata.toLowerCase()) ;
+        if(isMatch !=null) {
+          matchIndex = i ;
+		  flag=0;
+		  break;
+        }
+		else{
+			 flag=1;
+		}
+      }
+	
+	  changeCurrentSongDetails(songs[matchIndex]);
+	   splay(songs[matchIndex]);
+	 if(flag==1){
+		 alert("Song Not Found");
+		 togglesong();
+	 }
+	   });
 
-	$('.back_img').on('click', function() {
+//to go back to welcome-screen
+$('.back_img').on('click', function() {
+		togglesong();
 		 $('.main').addClass('hidden');
           $('.welcome-screen').removeClass('hidden');
 	});
-	
-		$('.song-duration').on('click', function() {
-		 $('.song-duration').addClass('hidden');
-          $('.time-left').removeClass('hidden');
+
+//function to show time-left of current song	
+$('.song-duration').on('click', function() {
+$('.song-duration').addClass('hidden');
+$('.time-left').removeClass('hidden');
 	});
 		
-	$('.time-left').on('click', function() {
+//function to show duration of song
+$('.time-left').on('click', function() {
 		 $('.time-left').addClass('hidden');
           $('.song-duration').removeClass('hidden');
 	});
 
-	function togglesong(){
+//function to play or pause a song
+function togglesong(){
 	var song = document.querySelector('audio');
 		if (song.paused == true) {
             console.log('Playing');
@@ -40,9 +73,11 @@ $('.welcome-screen button').on('click', function() {
             $('.play-icon').removeClass('fa-pause').addClass('fa-play');
             song.pause();
         }
-	}
+}
 	
-	function splay(sub){
+
+//function to play or pause a song using voice
+function splay(sub){
 	var song = document.querySelector('audio');
 		song.src=sub.fileName;
 		if (song.paused == true) {
@@ -55,8 +90,10 @@ $('.welcome-screen button').on('click', function() {
             $('.play-icon').removeClass('fa-pause').addClass('fa-play');
             song.pause();
         }
-	}
-	function fancyTimeFormat(time)
+}
+
+//to convert seconds into minutes
+function fancyTimeFormat(time)
 	{   
     // Hours, minutes and seconds
     var hrs = ~~(time / 3600);
@@ -75,13 +112,16 @@ $('.welcome-screen button').on('click', function() {
     return ret;
 	}
 	
-	
+
+//showing current song details
 function changeCurrentSongDetails(songObj) {
-  $('.current-song-image').attr('src',songObj.image) ;
+  $('.current-song-image').attr('src','image/'+ songObj.image) ;
   $('.current-song-name').text(songObj.name) ;
   $('.current-song-album').text(songObj.album) ;
+  $('.current-song-artist').text(songObj.artist) ;
 }
-	
+
+//showing current time ,time left and song duration	
 function updateCurrentTime(){
 	var song=document.querySelector('audio');
 	//console.log(song.currentTime);
@@ -92,7 +132,7 @@ function updateCurrentTime(){
 	var duration=Math.floor(song.duration);
 	var y=duration;
 	duration=fancyTimeFormat(duration);
-	
+
 	var timeleft=y-x;
 	timeleft=fancyTimeFormat(timeleft);
 	$('.time-elapsed').text(currentTime);
@@ -100,6 +140,7 @@ function updateCurrentTime(){
 	$('.time-left').text( "-" + timeleft);
 	}
 	
+//to play selected song
 function addSongNameClickEvent(songObj,position){
 	var songName=songObj.fileName;
 	var id='#song'+position;
@@ -118,7 +159,7 @@ function addSongNameClickEvent(songObj,position){
 	}
 
 	
-	/*
+//song array	
 	var songs=[
 	{
 		'name':'Despacito',
@@ -132,7 +173,7 @@ function addSongNameClickEvent(songObj,position){
 		'name':'Shape of You',
 		'artist':'Ed Sheeran',
 		'album':'Shape of You',
-		'duration':'3:56',
+		'duration':'4:26',
 		'fileName':'song2.mp3',
 		'image':'song2.jpg'
 	},
@@ -153,17 +194,19 @@ function addSongNameClickEvent(songObj,position){
 		'image':'song4.jpg'
 	},
 	{
-		'name':'I Dont Wanna Live',
+		'name':"I Don't Wanna Live",
 		'artist':'Zayn and Taylor',
-		'album':'I Dont Wanna Live',
+		'album':"I Don't Wanna Live",
 		'duration':'4:16',
 		'fileName':'song5.mp3',
 		'image':'song5.jpg'
 	}
 	]
 	
+//displaying number of songs in playlist
+$('.total').text('TOTAL: ' + songs.length +' SONGS');
 
-
+//function to load playlist
 window.onload = function() {
 	changeCurrentSongDetails(songs[0]);
 
@@ -180,9 +223,15 @@ window.onload = function() {
 	setInterval(function(){
 	updateCurrentTime();
 	},1000);
-	}*/
+	}
 	
+
+/*
+
+url of ajax request isnt working  
+
 var songs=[];
+$('.total').text('TOTAL: ' + songs.length);
 	function setupApp() {
   changeCurrentSongDetails(songs[0]);
 
@@ -202,25 +251,10 @@ var songs=[];
     addSongNameClickEvent(obj,i+1) ;
   }
 }
-    
-	
-	 $('.play-icon').on('click', function() {
-        togglesong();
-    });
-    $('body').on('keypress', function(event) {
-                if (event.keyCode == 32) {
-                    togglesong();
-                }
-            });
-			
-			
-			
-		
-
-  function fetchSongs() {
+function fetchSongs() {
 
       $.ajax({
-        'url': 'https://jsonbin.io/b/5a577694fa0fa33d7b63d4d7',
+             url: 'https://jsonbin.io/b/59f713154ef213575c9f652f',
         'dataType': 'json',
         'method': 'GET',
         'success': function (responseData) {
@@ -231,12 +265,27 @@ var songs=[];
       }) ;
 
     }
-
+*/
   
-			
-	var recognition= new webkitSpeechRecognition();
+
+//to play song when user click play icon 
+ $('.play-icon').on('click', function() {
+        togglesong();
+    });
+
+//play or pause song using P key
+    $('body').on('keypress', function(event) {
+                if (event.keyCode == 80 || event.keyCode == 112 ) {
+                    togglesong();
+                }
+            });
 	
-	 $('#start_img').on('click', function () {
+  
+//SpeechRecognition object
+var recognition= new webkitSpeechRecognition();
+	
+//capturing user voice
+$('#start_img').on('click', function () {
     // This will make your browser start
     // listening to the user
 	finalText='';
@@ -245,19 +294,12 @@ var songs=[];
   
 	
 
+	
+//issuing final result
     var finalText = '' ;
     recognition.onresult = function(event) {
-      // First declare a variable which
-      // will hold the text
-
-
-      // Your text may have multiple words
-      // We need to iterate over the results
       for (var i = event.resultIndex; i < event.results.length; ++i) {
 
-        // speech recognition makes several guesses
-        // we have to check for the final guess and
-        // get the sentence out of it
         if (event.results[i].isFinal) {
           finalText += event.results[i][0].transcript;
         }
@@ -265,13 +307,15 @@ var songs=[];
 
     };
 
-  recognition.onend = function () {
+//calling wit	
+ recognition.onend = function () {
       // call wit
       callWit(finalText) ;
     }
 	
-	
-    function callWit(text) {
+
+//main function to play song using voice	
+ function callWit(text) {
         $.ajax({
          url: 'https://api.wit.ai/message',
          data: {

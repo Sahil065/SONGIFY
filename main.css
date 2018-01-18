@@ -20,6 +20,9 @@ h1 {
 	font-size:40px;
 	color:red;
 }
+.text-input {
+	float:right;
+}
 
 .wrapper {
     height: 100%;
@@ -88,8 +91,8 @@ button{
     display: none;
 }
 
-.right.floated {
-    float:right;
+.main .floated {
+    text-align:center;
 	color:rgba(255, 0, 0, 0.5);
 	font-size:25px;
 }
@@ -184,7 +187,9 @@ button{
     text-align: right;
 }
 
-
+.mike{
+	text-align:right;
+}
 .content {
     position: relative;
 }
